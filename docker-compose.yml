@@ -1,24 +1,18 @@
 services:
   db:
     image: postgres:17-alpine
-    hostname: "${POSTGRES_HOST}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
-    ports:
-      - "${POSTGRES_PORT}:5432"
     restart: unless-stopped
 
   redis:
     image: redis:7-alpine
-    hostname: "${REDIS_HOST}"
     volumes:
       - redis_data:/data
     env_file:
       - .env
-    ports:
-      - "${REDIS_PORT}:6379"
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
     restart: unless-stopped
 
