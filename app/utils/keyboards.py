@@ -44,6 +44,20 @@ def manage_admins_kb() -> InlineKeyboardMarkup:
     return kb.as_markup()
 
 
+def mailing_kb() -> InlineKeyboardMarkup:
+    """Generates the mailing menu keyboard."""
+    kb = InlineKeyboardBuilder()
+    kb.add(InlineKeyboardButton(text="📥 Почати розсилку", callback_data="start_mailing"))
+    kb.add(InlineKeyboardButton(text="✍️ Текст", callback_data="add_text"))
+    kb.add(InlineKeyboardButton(text="🌄 Медіа", callback_data="add_media"))
+    kb.add(InlineKeyboardButton(text="⏹️ Кнопка", callback_data="add_button"))
+    kb.add(InlineKeyboardButton(text="⏰ Запланувати", callback_data="add_delay"))
+    kb.add(InlineKeyboardButton(text="🔄 Видалити інформацію", callback_data="reset_mailing"))
+    kb.add(InlineKeyboardButton(text="⬅️ Назад", callback_data="options"))
+    kb.adjust(1, 2, 2, 1)
+    return kb.as_markup()
+
+
 def update_user_kb() -> InlineKeyboardMarkup:
     """Generates the add user menu keyboard."""
     kb = InlineKeyboardBuilder()

@@ -10,17 +10,20 @@ week_days = [
 
 
 def is_weekend() -> bool:
+    """Checks if today is a weekend"""
     today = datetime.today().weekday()
     return today >= 5
 
 
 def get_current_week() -> str:
+    """Returns current week parity (even/odd)"""
     today = date.today()
     week_number = today.isocalendar()[1]
     return "Парна" if week_number % 2 != 0 else "Непарна"
 
 
 def replace_numbers(schedule: dict[int, str]) -> dict[str, str]:
+    """Replaces numeric keys with emoji equivalents"""
     emoji_map = {
         1: "1️⃣",
         2: "2️⃣",
@@ -37,6 +40,7 @@ def replace_numbers(schedule: dict[int, str]) -> dict[str, str]:
 
 
 def format_schedule_message(subjects: tuple[dict, dict], selected_day: str, user_group_name: str) -> str:
+    """Formats schedule message based on day, subjects, and group"""
     weekend = is_weekend()
     selected_week = "наступний" if weekend else "цей"
     current_week = get_current_week()

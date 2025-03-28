@@ -1,3 +1,5 @@
+from collections.abc import AsyncGenerator
+
 from sqlalchemy import select, update, desc, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -11,11 +13,12 @@ async def get_user_by_id(session: AsyncSession, user_id: int) -> User | None:
     return result.scalar_one_or_none()
 
 
-async def get_all_users(session: AsyncSession, limit: int = 100, offset: int = 0) -> list[User]:
-    """Getting the list of all users in the database with pagination."""
-    query = select(User).limit(limit).offset(offset).order_by(User.created_at.desc())
-    result = await session.execute(query)
-    return list(result.scalars().all())
+async def get_users(session: AsyncSession) -> AsyncGenerator[User, None]:
+    """Asynchronously retrieves users from the database using streaming data."""
+    stmt = select(User).execution_options(yield_per=1000, stream_results=True)
+    result = await session.stream(stmt)
+    async for users in result.scalars():
+        yield users
 
 
 async def get_user_is_admin(session: AsyncSession, user_id: int) -> bool:

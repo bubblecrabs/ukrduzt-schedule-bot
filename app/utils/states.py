@@ -12,7 +12,6 @@ class AdminStates(StatesGroup):
 
 
 class MailingStates(StatesGroup):
-    menu: State = State()
     text: State = State()
     media: State = State()
     button_text: State = State()

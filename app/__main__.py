@@ -4,6 +4,7 @@ import logging
 from app.core.bot import bot, dp
 from app.handlers import get_routers
 from app.middlewares.database import DatabaseMiddleware
+from app.services.mailing import process_mailing_tasks
 
 
 async def on_startup() -> None:
@@ -23,7 +24,10 @@ async def main() -> None:
     """Main function to start the bot."""
     dp.startup.register(on_startup)
     dp.shutdown.register(on_shutdown)
-    await dp.start_polling(bot)
+
+    async with asyncio.TaskGroup() as tg:
+        tg.create_task(dp.start_polling(bot))
+        tg.create_task(process_mailing_tasks())
 
 
 if __name__ == "__main__":
