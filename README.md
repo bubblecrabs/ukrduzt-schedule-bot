@@ -1,4 +1,5 @@
 # Telegram Bot for University Schedule (UkrDUZT)
+
 [![Python](https://img.shields.io/badge/Python-3.12-green)](https://www.python.org/)
 [![Aiogram](https://img.shields.io/badge/Aiogram-3.17.0-blue)](https://docs.aiogram.dev/)
 [![Aiohttp](https://img.shields.io/badge/Aiohttp-3.11+-blue)](https://docs.aiohttp.org/)
@@ -8,8 +9,9 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-7.0+-red)](https://redis.io/)
 [![Docker](https://img.shields.io/badge/Docker-Latest-blue)](https://www.docker.com/)
+[![UV](https://img.shields.io/badge/UV-Latest-purple)](https://docs.astral.sh/uv)
 
-![Project Screenshot Placeholder](https://i.imgur.com/sFaMPUG.png)
+![Project Screenshot](https://i.imgur.com/sFaMPUG.png)
 
 This is a Telegram bot designed to help students and staff of UkrDUZT access their university schedule easily. The bot provides quick and intuitive access to schedules directly within Telegram.
 
@@ -33,54 +35,6 @@ Ensure you have the following installed on your system:
 - **Redis**
 - **Git**
 
-### Steps
-
-1. **Clone the Repository**
-
-   ```bash
-   git clone https://github.com/bubblecrabs/ukrduzt-schedule-bot.git
-   cd ukrduzt-schedule-bot
-   ```
-
-2. **Set Up a Virtual Environment**
-
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use: venv\Scripts\activate
-   ```
-
-3. **Install Dependencies**
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Set Up Environment Variables**
-
-   Rename the `.env.example` file to `.env` and replace the placeholder values with your own data:
-   
-   ```bash
-   mv .env.example .env
-   ```   
-
-   Example `.env` file:
-   ```env
-   BOT_TOKEN=1234567890:abcdefghijklmnopqrstuvwxyz
-   ```
-
-5. **Initialize the Database**
-
-   ```bash
-   alembic upgrade head
-   ```
-
-6. **Run the Bot Locally**
-
-   ```bash
-   cd bot
-   python __main__.py
-   ```
-
 ### Using Docker
 
 1. **Clone the Repository**
@@ -93,13 +47,13 @@ Ensure you have the following installed on your system:
 2. **Set Up Environment Variables**
 
    Rename the `.env.example` file to `.env` and replace the placeholder values with your own data:
-   
+
    ```bash
    mv .env.example .env
-   ```   
+   ```
 
    Example `.env` file:
-   ```env
+   ```
    BOT_TOKEN=1234567890:abcdefghijklmnopqrstuvwxyz
    ```
 
@@ -107,13 +61,12 @@ Ensure you have the following installed on your system:
 
    ```bash
    docker compose up -d --build
-   docker ps
    ```
 
-4. **Run Database Migrations**
+4. **Apply Database Migrations**
 
    ```bash
-   docker compose exec bot alembic upgrade head
+   alembic upgrade head
    ```
 
 ## Contributing
