@@ -29,7 +29,6 @@ services:
       - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_DB=${POSTGRES_DB}
       - BACKUP_NUM_KEEP=14
-      - BACKUP_ON_START=TRUE
       - SCHEDULE=@daily
     depends_on:
       - postgres
