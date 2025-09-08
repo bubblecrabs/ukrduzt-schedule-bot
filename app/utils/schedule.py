@@ -19,7 +19,7 @@ def get_current_week() -> str:
     """Returns current week parity (even/odd)"""
     today = date.today()
     week_number = today.isocalendar()[1]
-    return "Парна" if week_number % 2 != 0 else "Непарна"
+    return "Непарна" if week_number % 2 != 0 else "Парна"
 
 
 def replace_numbers(schedule: dict[int, str]) -> dict[str, str]:
@@ -46,7 +46,8 @@ def format_schedule_message(subjects: tuple[dict, dict], selected_day: str, user
     current_week = get_current_week()
 
     if weekend:
-        selected_subjects = subjects[1] if current_week == "Парна" else subjects[0]
+        next_week_is_even = current_week == "Непарна"
+        selected_subjects = subjects[0] if next_week_is_even else subjects[1]
     else:
         selected_subjects = subjects[0] if current_week == "Парна" else subjects[1]
 
