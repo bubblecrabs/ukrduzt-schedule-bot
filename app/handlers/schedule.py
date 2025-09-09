@@ -2,10 +2,9 @@ from aiogram import F, Router
 from aiogram.types import CallbackQuery
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.services.scraper import get_faculties, get_groups, get_schedule
+from app.services.scraper import scraper
 from app.services.users import get_user_by_id, update_user
 from app.services.website import get_website
-from app.utils.schedule import week_days, format_schedule_message
 from app.utils.keyboards import (
     update_user_kb,
     get_days_kb,
@@ -14,6 +13,7 @@ from app.utils.keyboards import (
     get_groups_kb,
     back_button_kb,
 )
+from app.utils.scraper import week_days
 
 router = Router()
 
@@ -40,7 +40,7 @@ async def schedule_handler(call: CallbackQuery, session: AsyncSession) -> None:
 @router.callback_query(F.data == "change_group")
 async def get_faculties_handler(call: CallbackQuery) -> None:
     """Handles for the change_group callback query."""
-    faculties = await get_faculties()
+    faculties = await scraper.get_faculties()
     await call.message.edit_text(
         text="<b>Виберіть факультатив ⬇️</b>",
         reply_markup=get_faculties_kb(faculties=faculties),
@@ -72,7 +72,7 @@ async def get_groups_handler(call: CallbackQuery, session: AsyncSession) -> None
         user_course=int(course),
     )
     website = await get_website(session=session)
-    groups = await get_groups(
+    groups = await scraper.get_groups(
         year_id=website.year,
         faculty=user.user_faculty,
         course=user.user_course,
@@ -110,7 +110,9 @@ async def get_schedule_handler(call: CallbackQuery, session: AsyncSession) -> No
         session=session,
         user_id=call.from_user.id,
     )
-    schedule = await get_schedule(
+
+    # Get schedule returns tuple of (paired_subjects, unpaired_subjects)
+    paired_subjects, unpaired_subjects = await scraper.get_schedule(
         year=website.year,
         semester=website.semester,
         faculty=user.user_faculty,
@@ -118,11 +120,15 @@ async def get_schedule_handler(call: CallbackQuery, session: AsyncSession) -> No
         group=user.user_group,
         day=int(day),
     )
-    formatted_message = format_schedule_message(
-        subjects=schedule,
+
+    # Format message using class method
+    formatted_message = scraper.format_schedule_message(
+        paired_subjects=paired_subjects,
+        unpaired_subjects=unpaired_subjects,
         selected_day=day_name,
         user_group_name=user.user_group_name,
     )
+
     await call.message.edit_text(
         text=formatted_message,
         reply_markup=back_button_kb("schedule"),

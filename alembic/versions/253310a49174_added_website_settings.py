@@ -29,7 +29,7 @@ def upgrade() -> None:
         sa.Column("semester", sa.Integer(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.bulk_insert(website_table, [{"year": 81, "semester": 2}])
+    op.bulk_insert(website_table, [{"year": 87, "semester": 2}])
     # ### end Alembic commands ###
 
 

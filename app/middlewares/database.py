@@ -4,7 +4,7 @@ from typing import Any
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 
-from app.core.postgres import sessionmaker
+from app.core.database import sessionmaker
 
 
 class DatabaseMiddleware(BaseMiddleware):

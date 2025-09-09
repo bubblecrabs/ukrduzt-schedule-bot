@@ -3,8 +3,9 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.filters import CommandStart
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.filters.admin import AdminFilter
 from app.services.users import create_user, get_user_is_admin
-from app.utils.keyboards import start_kb
+from app.utils.keyboards import start_kb, options_kb
 
 router = Router()
 start_message = "✋ Привіт, я допоможу дізнатися <b>актуальний розклад</b> на тиждень!"
@@ -34,4 +35,13 @@ async def start_callback_handler(call: CallbackQuery, session: AsyncSession) -> 
     await call.message.edit_text(
         text=start_message,
         reply_markup=start_kb(is_admin=is_admin),
+    )
+
+
+@router.callback_query(F.data == "options", AdminFilter())
+async def options_handler(call: CallbackQuery) -> None:
+    """Handles for the options callback query."""
+    await call.message.edit_text(
+        text="<b>Виберіть, що хочете зробити ⬇️</b>",
+        reply_markup=options_kb(),
     )

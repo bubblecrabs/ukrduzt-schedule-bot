@@ -1,6 +1,6 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder, InlineKeyboardMarkup, InlineKeyboardButton
 
-from app.utils.schedule import week_days
+from app.utils.scraper import week_days
 
 
 def start_kb(is_admin: bool) -> InlineKeyboardMarkup:

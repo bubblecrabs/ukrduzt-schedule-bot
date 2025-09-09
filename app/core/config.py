@@ -2,15 +2,14 @@ from pydantic import PostgresDsn, RedisDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class EnvBaseSettings(BaseSettings):
+class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
-
-class BotSettings(EnvBaseSettings):
+    # Bot settings
     BOT_TOKEN: str
+    DEBUG: bool
 
-
-class PostgresSettings(EnvBaseSettings):
+    # Postgres settings
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_HOST: str
@@ -28,8 +27,7 @@ class PostgresSettings(EnvBaseSettings):
             path=self.POSTGRES_DB,
         )
 
-
-class RedisSettings(EnvBaseSettings):
+    # Redis settings
     REDIS_USER: str
     REDIS_PASSWORD: str
     REDIS_HOST: str
@@ -46,10 +44,6 @@ class RedisSettings(EnvBaseSettings):
             password=self.REDIS_PASSWORD,
             path=self.REDIS_DB,
         )
-
-
-class Settings(BotSettings, PostgresSettings, RedisSettings):
-    DEBUG: bool
 
 
 settings = Settings()
